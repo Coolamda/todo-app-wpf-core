@@ -1,0 +1,32 @@
+﻿<Window x:Class="TodoApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TodoApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="500">
+    <StackPanel Margin="10">
+        <TextBox Text="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Margin="5" Padding="2" Command="{Binding CreateCommand}">Create</Button>
+            <Button Margin="5" Padding="2">Delete</Button>
+        </WrapPanel>
+        <DataGrid ItemsSource="{Binding TodoItems}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+
+                <DataGridTemplateColumn Header="Completed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                </CheckBox>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</Window>
