@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using TodoApp;
 
@@ -41,21 +42,23 @@ namespace WpfCore.TodoList.ViewModel
 
             foreach (TodoItem todoItem in _todoList.TodoItems)
             {
-                TodoItems.Add(new TodoItemViewModel(todoItem.Description, todoItem.IsCompleted));
+                TodoItems.Add(new TodoItemViewModel(todoItem.Id, todoItem.Description, todoItem.IsCompleted));
             }
         }
 
         private void CreateTodo()
         {
             var newTodo = _todoList.AddTodo(NewTodoDescription);
-            var newTodoViewModel = new TodoItemViewModel(newTodo.Description, newTodo.IsCompleted);
+            var newTodoViewModel = new TodoItemViewModel(newTodo.Id, newTodo.Description, newTodo.IsCompleted);
             TodoItems.Add(newTodoViewModel);
             NewTodoDescription = "";
         }
 
         public void DeleteTodo()
         {
-            Console.WriteLine(SelectedItem);
+            TodoItemViewModel todoItemViewModel = (TodoItemViewModel)SelectedItem;
+            _todoList.RemoveTodoAtId(todoItemViewModel.Id);
+            TodoItems.Remove(todoItemViewModel);
         }
     }
 }

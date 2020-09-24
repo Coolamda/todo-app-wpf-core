@@ -21,6 +21,12 @@ namespace WpfCore.TodoList
             _todoItemCount++;
         }
 
+        public TodoItem(string description, bool isCompleted)
+        {
+            Description = description;
+            IsCompleted = isCompleted;
+        }
+
         public void ToggleTodo()
         {
             IsCompleted = !IsCompleted;
