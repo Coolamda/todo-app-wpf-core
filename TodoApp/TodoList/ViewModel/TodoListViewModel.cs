@@ -1,8 +1,6 @@
 ﻿using PropertyChanged;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Input;
 using TodoApp;
 
@@ -23,11 +21,7 @@ namespace WpfCore.TodoList.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
-        public object SelectedItem
-        {
-            get;
-            set;
-        }
+        public object SelectedItem { get; set; }
 
         public TodoListViewModel()
         {
