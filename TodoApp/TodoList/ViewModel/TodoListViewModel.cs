@@ -1,4 +1,5 @@
 ﻿using PropertyChanged;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -15,15 +16,22 @@ namespace WpfCore.TodoList.ViewModel
 
         public ICommand CreateCommand { get; set; }
 
-        // public ICommand ToggleCommand { get; set; } Nicht nötig?
+        public ICommand DeleteCommand { get; set; }
 
         public string NewTodoDescription { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
+        public object SelectedItem
+        {
+            get;
+            set;
+        }
+
         public TodoListViewModel()
         {
-            CreateCommand = new RelayCommand((_) => CreateTodo(), (_) => true);
+            CreateCommand = new RelayCommand(_ => CreateTodo(), _ => true);
+            DeleteCommand = new RelayCommand(_ => DeleteTodo(), _ => true);
 
             _todoList.AddTodo("Wäsche wasche");
             _todoList.AddTodo("WPF App entwickeln");
@@ -43,6 +51,11 @@ namespace WpfCore.TodoList.ViewModel
             var newTodoViewModel = new TodoItemViewModel(newTodo.Description, newTodo.IsCompleted);
             TodoItems.Add(newTodoViewModel);
             NewTodoDescription = "";
+        }
+
+        public void DeleteTodo()
+        {
+            Console.WriteLine(SelectedItem);
         }
     }
 }

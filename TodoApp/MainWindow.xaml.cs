@@ -17,7 +17,7 @@ namespace TodoApp
         {
             InitializeComponent();
 
-            this.DataContext = new TodoListViewModel();
+            DataContext = new TodoListViewModel();
         }
     }
 }
