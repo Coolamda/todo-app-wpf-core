@@ -22,7 +22,7 @@ namespace WpfCore.TodoList
         /// Adds an TodoItem to Todoitems.
         /// </summary>
         /// <param name="description">Description of the new todo.</param>
-        /// <returns></returns>
+        /// <returns>Created TodoItem.</returns>
         public TodoItem AddTodo(string description)
         {
             var todoItem = new TodoItem(description);
