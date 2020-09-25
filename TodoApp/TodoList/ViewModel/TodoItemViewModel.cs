@@ -12,7 +12,7 @@ namespace WpfCore.TodoList.ViewModel
 
         public bool IsCompleted { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public TodoItemViewModel(int id, string description, bool isCompleted)
         {

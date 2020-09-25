@@ -19,7 +19,7 @@ namespace WpfCore.TodoList.ViewModel
 
         public string NewTodoDescription { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public object SelectedItem { get; set; }
 
