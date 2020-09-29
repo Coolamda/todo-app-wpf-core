@@ -7,6 +7,7 @@ namespace TodoApp.TodoList
     {
         public DbSet<Todo> Todos { get; set; }
 
+        // TODO: Don't use absolute path
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=C:\\sqlite\\db\\todos.db");
     }
