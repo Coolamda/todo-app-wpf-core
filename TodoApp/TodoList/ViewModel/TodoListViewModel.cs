@@ -1,21 +1,24 @@
 ﻿using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using TodoApp;
+using TodoApp.TodoList;
+using TodoApp.TodoList.ViewModel;
 
 namespace WpfCore.TodoList.ViewModel
 {
     [AddINotifyPropertyChangedInterface]
     internal class TodoListViewModel : INotifyPropertyChanged
     {
-        private TodoList _todoList = new TodoList();
-
         public ObservableCollection<TodoItemViewModel> TodoItems { get; set; } = new ObservableCollection<TodoItemViewModel>();
 
         public ICommand CreateCommand { get; set; }
 
         public ICommand DeleteCommand { get; set; }
+
+        public ICommand ToggleCommand { get; set; }
 
         public string NewTodoDescription { get; set; }
 
@@ -28,30 +31,49 @@ namespace WpfCore.TodoList.ViewModel
             CreateCommand = new RelayCommand(_ => CreateTodo(), _ => true);
             DeleteCommand = new RelayCommand(_ => DeleteTodo(), _ => true);
 
-            _todoList.AddTodo("Wäsche wasche");
-            _todoList.AddTodo("WPF App entwickeln");
-            _todoList.AddTodo("Berichts vervollständigen");
-
-            _todoList.TodoItems[1].IsCompleted = true;
-
-            foreach (TodoItem todoItem in _todoList.TodoItems)
+            using (var db = new TodoContext())
             {
-                TodoItems.Add(new TodoItemViewModel(todoItem.Id, todoItem.Description, todoItem.IsCompleted));
+                var todos = db.Todos.ToList();
+                foreach (Todo todo in todos)
+                {
+                    TodoItems.Add(new TodoItemViewModel(todo.TodoId, todo.Description, todo.IsCompleted));
+                }
             }
         }
 
         private void CreateTodo()
         {
-            var newTodo = _todoList.AddTodo(NewTodoDescription);
-            var newTodoViewModel = new TodoItemViewModel(newTodo.Id, newTodo.Description, newTodo.IsCompleted);
-            TodoItems.Add(newTodoViewModel);
+            var todo = new Todo
+            {
+                Description = NewTodoDescription
+            };
+
+            using (var db = new TodoContext())
+            {
+                db.Todos.Add(todo);
+                db.SaveChanges();
+            }
+
+            TodoItems.Add(new TodoItemViewModel(todo.TodoId, todo.Description, todo.IsCompleted));
             NewTodoDescription = "";
         }
 
         public void DeleteTodo()
         {
             TodoItemViewModel todoItemViewModel = (TodoItemViewModel)SelectedItem;
-            _todoList.RemoveTodoAtId(todoItemViewModel.Id);
+            var todo = new Todo
+            {
+                TodoId = todoItemViewModel.Id,
+                Description = todoItemViewModel.Description,
+                IsCompleted = todoItemViewModel.IsCompleted
+            };
+
+            using (var db = new TodoContext())
+            {
+                db.Todos.Remove(todo);
+                db.SaveChanges();
+            }
+
             TodoItems.Remove(todoItemViewModel);
         }
     }

@@ -12,7 +12,10 @@
             <Button Margin="5" Padding="2" Command="{Binding CreateCommand}">Create</Button>
             <Button Margin="5" Padding="2" Command="{Binding DeleteCommand}" CommandParameter="{Binding}">Delete</Button>
         </WrapPanel>
-        <DataGrid ItemsSource="{Binding TodoItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False">
+        <DataGrid
+            ItemsSource="{Binding TodoItems}"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
 
@@ -20,7 +23,12 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <CheckBox
+                                    Command="{Binding ToggleCommand}"
+                                    IsChecked="{
+                                        Binding IsCompleted,
+                                        Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged}">
                                 </CheckBox>
                             </Grid>
                         </DataTemplate>
