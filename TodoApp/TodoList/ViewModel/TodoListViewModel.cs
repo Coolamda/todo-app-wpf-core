@@ -6,12 +6,25 @@ using TodoApp;
 
 namespace WpfCore.TodoList.ViewModel
 {
+    /// <summary>
+    /// ViewModel of a TodoList. Layer between TodoList and view. Keeps track of todos.
+    /// Commands for adding and deleting todos.
+    /// </summary>
+
+    // Use Fody.PropertyChanged for simpler creation of bindings.
     [AddINotifyPropertyChangedInterface]
     internal class TodoListViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        ///
+        /// </summary>
         private TodoList _todoList = new TodoList();
 
+        #region Properties
+
         public ObservableCollection<TodoItemViewModel> TodoItems { get; set; } = new ObservableCollection<TodoItemViewModel>();
+
+        #endregion Properties
 
         public ICommand CreateCommand { get; set; }
 
