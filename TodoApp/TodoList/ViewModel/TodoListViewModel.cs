@@ -1,4 +1,5 @@
 ﻿using PropertyChanged;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace WpfCore.TodoList.ViewModel
 
         public TodoListViewModel()
         {
-            CreateCommand = new RelayCommand(_ => CreateTodo(), _ => true);
+            CreateCommand = new RelayCommand(_ => CreateTodo(), _ => CanExecuteCreate());
             DeleteCommand = new RelayCommand(_ => DeleteTodo(), _ => CanExecuteDelete());
 
             using (var db = new TodoContext())
@@ -84,6 +85,11 @@ namespace WpfCore.TodoList.ViewModel
             {
                 return true;
             }
+        }
+
+        public bool CanExecuteCreate()
+        {
+            return !String.IsNullOrWhiteSpace(NewTodoDescription);
         }
     }
 }
