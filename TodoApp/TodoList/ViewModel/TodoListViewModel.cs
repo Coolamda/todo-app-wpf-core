@@ -18,13 +18,11 @@ namespace WpfCore.TodoList.ViewModel
 
         public ICommand DeleteCommand { get; set; }
 
-        public ICommand ToggleCommand { get; set; }
-
         public string NewTodoDescription { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+        public TodoItemViewModel SelectedItem { get; set; }
 
-        public object SelectedItem { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public TodoListViewModel()
         {
@@ -60,12 +58,11 @@ namespace WpfCore.TodoList.ViewModel
 
         public void DeleteTodo()
         {
-            TodoItemViewModel todoItemViewModel = (TodoItemViewModel)SelectedItem;
             var todo = new Todo
             {
-                TodoId = todoItemViewModel.TodoId,
-                Description = todoItemViewModel.Description,
-                IsCompleted = todoItemViewModel.IsCompleted
+                TodoId = SelectedItem.TodoId,
+                Description = SelectedItem.Description,
+                IsCompleted = SelectedItem.IsCompleted
             };
 
             using (var db = new TodoContext())
@@ -74,7 +71,7 @@ namespace WpfCore.TodoList.ViewModel
                 db.SaveChanges();
             }
 
-            TodoItems.Remove(todoItemViewModel);
+            TodoItems.Remove(SelectedItem);
         }
     }
 }
