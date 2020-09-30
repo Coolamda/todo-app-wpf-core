@@ -20,14 +20,14 @@ namespace WpfCore.TodoList.ViewModel
 
         public string NewTodoDescription { get; set; }
 
-        public TodoItemViewModel SelectedItem { get; set; }
+        public TodoItemViewModel SelectedItem { get; set; } = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public TodoListViewModel()
         {
             CreateCommand = new RelayCommand(_ => CreateTodo(), _ => true);
-            DeleteCommand = new RelayCommand(_ => DeleteTodo(), _ => true);
+            DeleteCommand = new RelayCommand(_ => DeleteTodo(), _ => CanExecuteDelete());
 
             using (var db = new TodoContext())
             {
@@ -72,6 +72,18 @@ namespace WpfCore.TodoList.ViewModel
             }
 
             TodoItems.Remove(SelectedItem);
+        }
+
+        public bool CanExecuteDelete()
+        {
+            if (SelectedItem == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

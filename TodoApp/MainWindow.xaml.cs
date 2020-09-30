@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using WpfCore.TodoList.ViewModel;
 
 namespace TodoApp
@@ -13,6 +15,12 @@ namespace TodoApp
             InitializeComponent();
 
             DataContext = new TodoListViewModel();
+        }
+
+        private void DataGrid_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        {
+            var context = (TodoListViewModel)DataContext;
+            context.SelectedItem = null;
         }
     }
 }

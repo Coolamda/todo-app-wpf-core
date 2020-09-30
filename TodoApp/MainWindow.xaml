@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="500">
     <StackPanel Margin="10">
-        <TextBox Text="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBox
+            Text="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            GotKeyboardFocus="DataGrid_GotKeyboardFocus" />
         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Margin="5" Padding="2" Command="{Binding CreateCommand}">Create</Button>
             <Button Margin="5" Padding="2" Command="{Binding DeleteCommand}">Delete</Button>
