@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using TodoApp;
 using TodoApp.TodoList;
@@ -10,9 +11,22 @@ namespace WpfCore.TodoList.ViewModel
     [AddINotifyPropertyChangedInterface]
     internal class TodoItemViewModel : INotifyPropertyChanged
     {
-        public int Id { get; set; }
+        public int TodoId { get; set; }
 
-        public string Description { get; set; }
+        private string _description;
+
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                if (_description != value)
+                {
+                    _description = value;
+                    SaveChangesToTodo(value);
+                }
+            }
+        }
 
         public bool IsCompleted { get; set; }
 
@@ -24,7 +38,7 @@ namespace WpfCore.TodoList.ViewModel
         {
             ToggleCommand = new RelayCommand(_ => ToggleTodo(), _ => true);
 
-            Id = id;
+            TodoId = id;
             Description = description;
             IsCompleted = isCompleted;
         }
@@ -33,8 +47,18 @@ namespace WpfCore.TodoList.ViewModel
         {
             using (var db = new TodoContext())
             {
-                Todo todo = db.Todos.Find(Id);
+                Todo todo = db.Todos.Find(TodoId);
                 todo.IsCompleted = !todo.IsCompleted;
+                db.SaveChanges();
+            }
+        }
+
+        public void SaveChangesToTodo(string newDescription)
+        {
+            using (var db = new TodoContext())
+            {
+                Todo todo = db.Todos.First(todo => todo.TodoId == TodoId);
+                todo.Description = newDescription;
                 db.SaveChanges();
             }
         }

@@ -10,7 +10,7 @@
         <TextBox Text="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Margin="5" Padding="2" Command="{Binding CreateCommand}">Create</Button>
-            <Button Margin="5" Padding="2" Command="{Binding DeleteCommand}" CommandParameter="{Binding}">Delete</Button>
+            <Button Margin="5" Padding="2" Command="{Binding DeleteCommand}">Delete</Button>
         </WrapPanel>
         <DataGrid
             ItemsSource="{Binding TodoItems}"

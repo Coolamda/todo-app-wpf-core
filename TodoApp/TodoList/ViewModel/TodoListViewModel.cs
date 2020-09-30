@@ -63,7 +63,7 @@ namespace WpfCore.TodoList.ViewModel
             TodoItemViewModel todoItemViewModel = (TodoItemViewModel)SelectedItem;
             var todo = new Todo
             {
-                TodoId = todoItemViewModel.Id,
+                TodoId = todoItemViewModel.TodoId,
                 Description = todoItemViewModel.Description,
                 IsCompleted = todoItemViewModel.IsCompleted
             };
