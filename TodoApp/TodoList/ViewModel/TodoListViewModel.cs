@@ -75,21 +75,8 @@ namespace WpfCore.TodoList.ViewModel
             TodoItems.Remove(SelectedItem);
         }
 
-        public bool CanExecuteDelete()
-        {
-            if (SelectedItem == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+        public bool CanExecuteDelete() => !(SelectedItem == null);
 
-        public bool CanExecuteCreate()
-        {
-            return !String.IsNullOrWhiteSpace(NewTodoDescription);
-        }
+        public bool CanExecuteCreate() => !String.IsNullOrWhiteSpace(NewTodoDescription);
     }
 }
