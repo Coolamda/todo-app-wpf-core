@@ -1,11 +1,29 @@
-﻿namespace TodoApp.TodoList.ViewModel
+﻿using GalaSoft.MvvmLight;
+
+namespace TodoApp.TodoList.ViewModel
 {
-    public class Todo
+    public class Todo : ObservableObject
     {
-        public int TodoId { get; set; }
+        private int _todoId;
+        private string _description;
+        private bool _isCompleted = false;
 
-        public string Description { get; set; }
+        public int TodoId
+        {
+            get => _todoId;
+            set => Set<int>(() => TodoId, ref _todoId, value);
+        }
 
-        public bool IsCompleted { get; set; } = false;
+        public string Description
+        {
+            get => _description;
+            set => Set<string>(() => Description, ref _description, value);
+        }
+
+        public bool IsCompleted
+        {
+            get => _isCompleted;
+            set => Set<bool>(() => IsCompleted, ref _isCompleted, value);
+        }
     }
 }

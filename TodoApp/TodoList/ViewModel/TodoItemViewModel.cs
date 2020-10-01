@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
@@ -8,12 +9,12 @@ using TodoApp.TodoList.ViewModel;
 
 namespace WpfCore.TodoList.ViewModel
 {
-    [AddINotifyPropertyChangedInterface]
-    internal class TodoItemViewModel : INotifyPropertyChanged
+    internal class TodoItemViewModel : ViewModelBase
     {
-        public int TodoId { get; set; }
-
         private string _description;
+        private bool _isCompleted;
+
+        public int TodoId { get; set; }
 
         public string Description
         {
@@ -24,19 +25,26 @@ namespace WpfCore.TodoList.ViewModel
                 {
                     _description = value;
                     SaveChangesToTodo(value);
+                    RaisePropertyChanged("Description");
                 }
             }
         }
 
-        public bool IsCompleted { get; set; }
+        public bool IsCompleted
+        {
+            get => _isCompleted;
+            set
+            {
+                _isCompleted = value;
+                RaisePropertyChanged("IsCompleted");
+            }
+        }
 
         public ICommand ToggleCommand { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public TodoItemViewModel(int id, string description, bool isCompleted)
         {
-            ToggleCommand = new RelayCommand(_ => ToggleTodo(), _ => true);
+            ToggleCommand = new RelayCommand(ToggleTodo, () => true);
 
             TodoId = id;
             Description = description;

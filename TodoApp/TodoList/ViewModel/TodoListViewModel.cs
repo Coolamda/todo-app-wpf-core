@@ -1,34 +1,50 @@
-﻿using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
-using TodoApp;
 using TodoApp.TodoList;
 using TodoApp.TodoList.ViewModel;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 namespace WpfCore.TodoList.ViewModel
 {
-    [AddINotifyPropertyChangedInterface]
-    internal class TodoListViewModel : INotifyPropertyChanged
+    internal class TodoListViewModel : ViewModelBase
     {
+        private TodoItemViewModel _selectedItem = null;
+        private string _newTodoDescription = null;
+
         public ObservableCollection<TodoItemViewModel> TodoItems { get; set; } = new ObservableCollection<TodoItemViewModel>();
 
-        public ICommand CreateCommand { get; set; }
+        public RelayCommand CreateCommand { get; set; }
 
-        public ICommand DeleteCommand { get; set; }
+        public RelayCommand DeleteCommand { get; set; }
 
-        public string NewTodoDescription { get; set; }
+        public string NewTodoDescription
+        {
+            get => _newTodoDescription;
+            set
+            {
+                _newTodoDescription = value;
+                RaisePropertyChanged();
+                CreateCommand.RaiseCanExecuteChanged();
+            }
+        }
 
-        public TodoItemViewModel SelectedItem { get; set; } = null;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        public TodoItemViewModel SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                RaisePropertyChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         public TodoListViewModel()
         {
-            CreateCommand = new RelayCommand(_ => CreateTodo(), _ => CanExecuteCreate());
-            DeleteCommand = new RelayCommand(_ => DeleteTodo(), _ => CanExecuteDelete());
+            CreateCommand = new RelayCommand(CreateTodo, CanExecuteCreate);
+            DeleteCommand = new RelayCommand(DeleteTodo, CanExecuteDelete);
 
             using (var db = new TodoContext())
             {
