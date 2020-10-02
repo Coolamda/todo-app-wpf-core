@@ -11,7 +11,7 @@ namespace TodoApp.Migrations
                 columns: table => new
                 {
                     TodoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(nullable: true),
                     IsCompleted = table.Column<bool>(nullable: false)
                 },

@@ -9,6 +9,6 @@ namespace TodoApp.TodoList
 
         // TODO: Don't use absolute path
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=C:\\sqlite\\db\\todos.db");
+            => options.UseSqlServer("Server=W011076SYS\\SQLEXPRESS;Database=Todo;Trusted_Connection=True;");
     }
 }
